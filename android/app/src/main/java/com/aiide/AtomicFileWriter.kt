@@ -7,10 +7,16 @@ class AtomicFileWriter(private val context: Context) {
 
     fun writeAtomic(path: String, content: String): Boolean {
         return try {
-            val tempPath = "$path.tmp"
-            java.io.File(tempPath).writeText(content)
-            java.io.File(tempPath).renameTo(java.io.File(path))
-            true
+            val targetFile = java.io.File(path)
+            val tempFile = java.io.File("$path.tmp")
+
+            tempFile.writeText(content)
+            if (!tempFile.renameTo(targetFile)) {
+                tempFile.copyTo(targetFile, overwrite = true)
+                tempFile.delete()
+            }
+
+            targetFile.exists() && targetFile.readText() == content
         } catch (e: Exception) {
             false
         }

@@ -44,7 +44,7 @@ class IntentOrchestrator(private val context: Context) {
             input.contains("生成") || input.contains("创建") -> "code.generate"
             input.contains("调试") || input.contains("错误") -> "debug.analyze"
             input.contains("审查") || input.contains("检查") -> "code.review"
-            input.contains("搜索") || input.contains("查找") -> "web.search"
+            input.contains("搜索") || input.contains("查找") -> "search.web"
             else -> "general"
         }
     }
