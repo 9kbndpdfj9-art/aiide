@@ -3,7 +3,7 @@ package com.aiide
 import android.content.Context
 import org.json.JSONObject
 
-class ModelProvider(private val context: Context) {
+open class ModelProvider(protected val context: Context) {
     private val providers = mutableMapOf<String, ProviderConfig>()
 
     data class ProviderConfig(
