@@ -5,7 +5,7 @@ import org.json.JSONObject
 import java.net.HttpURLConnection
 import java.net.URL
 
-class AnthropicProvider(private val context: Context) : ModelProvider(context) {
+class AnthropicProvider(context: Context) : ModelProvider(context) {
 
     companion object {
         private const val BASE_URL = "https://api.anthropic.com/v1"

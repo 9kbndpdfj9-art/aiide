@@ -2,7 +2,9 @@ package com.aiide
 
 import android.content.Context
 import org.json.JSONObject
+import java.io.File
 import java.util.concurrent.ConcurrentHashMap
+import kotlin.concurrent.thread
 
 class ShellExecutor(private val context: Context) {
 
@@ -39,14 +41,27 @@ class ShellExecutor(private val context: Context) {
 
         return try {
             val sanitizedCommand = sanitizeCommand(command)
-            val result = Runtime.getRuntime().exec(arrayOf("/bin/sh", "-c", sanitizedCommand))
+            val shell = if (File("/system/bin/sh").exists()) "/system/bin/sh" else "/bin/sh"
+            val workingDirectory = sessionId
+                ?.let { sessions[it]?.workingDir }
+                ?.let { File(it) }
+                ?.takeIf { it.exists() && it.isDirectory }
+            val result = Runtime.getRuntime().exec(arrayOf(shell, "-c", sanitizedCommand), null, workingDirectory)
+            var stdout = ""
+            var stderr = ""
+            val stdoutThread = thread(start = true) {
+                stdout = result.inputStream.bufferedReader().readText()
+            }
+            val stderrThread = thread(start = true) {
+                stderr = result.errorStream.bufferedReader().readText()
+            }
 
-            val stdout = result.inputStream.bufferedReader().readText()
-            val stderr = result.errorStream.bufferedReader().readText()
-            result.waitFor()
+            val exitCode = result.waitFor()
+            stdoutThread.join()
+            stderrThread.join()
 
             ExecutionResult(
-                exitCode = result.exitValue(),
+                exitCode = exitCode,
                 stdout = stdout,
                 stderr = stderr,
                 durationMs = System.currentTimeMillis() - startTime

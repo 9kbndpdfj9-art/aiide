@@ -1,12 +1,6 @@
 package com.aiide
 
 import android.content.Context
-import android.os.Bundle
-import android.view.View
-import android.view.inputmethod.InputMethodManager
-import androidx.appcompat.app.AppCompatActivity
-import android.widget.EditText
-import android.widget.TextView
 
 class LiveCodeSession(private val context: Context) {
 
@@ -16,7 +10,7 @@ class LiveCodeSession(private val context: Context) {
     fun startSession(): String {
         sessionId = "session_${System.currentTimeMillis()}"
         isActive = true
-        return sessionId!!
+        return requireNotNull(sessionId)
     }
 
     fun endSession() {

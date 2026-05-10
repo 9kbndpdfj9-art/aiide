@@ -7,7 +7,7 @@ import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.locks.ReentrantReadWriteLock
 import kotlin.concurrent.withLock
 
-class SemanticShadowEngine(private val context: Context) {
+class SemanticShadowEngine(private val context: Context? = null) {
 
     companion object {
         private const val TAG = "SemanticShadow"

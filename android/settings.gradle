@@ -14,5 +14,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "AIIDE"
-include(":app")
+rootProject.name = 'AIIDE'
+include ':app'

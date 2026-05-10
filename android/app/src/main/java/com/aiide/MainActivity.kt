@@ -6,14 +6,11 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
-import android.content.pm.PackageManager
-import android.Manifest
-import android.content.pm.PackageInfo
+import android.app.Activity
 import org.json.JSONObject
 import java.util.concurrent.Executors
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : Activity() {
     private lateinit var webView: WebView
     private lateinit var inputField: EditText
     private lateinit var sendButton: Button
@@ -61,8 +58,9 @@ class MainActivity : AppCompatActivity() {
                 appInfo.versionCode.toLong()
             }
 
-            modelRouter = ModelRouter(this)
-            bridge = Bridge(this, modelRouter!!)
+            val router = ModelRouter(this)
+            modelRouter = router
+            bridge = Bridge(this, router)
 
             val config = JSONObject().apply {
                 put("platform", "android")
@@ -92,7 +90,7 @@ class MainActivity : AppCompatActivity() {
                 val result = bridge?.dispatch(input)
                 runOnUiThread {
                     inputField.setText("")
-                    webView.evaluateJavascript("window.receiveMessage($result)", null)
+                    webView.evaluateJavascript("window.receiveMessage(${result ?: "{}"})", null)
                 }
             } catch (e: Exception) {
                 updateStatus("Error: ${e.message}")
