@@ -3,7 +3,7 @@ package com.aiide
 import android.content.Context
 import org.json.JSONObject
 
-class OpenAIProvider(private val context: Context) : ModelProvider(context) {
+class OpenAIProvider(context: Context) : ModelProvider(context) {
 
     companion object {
         private const val BASE_URL = "https://api.openai.com/v1"

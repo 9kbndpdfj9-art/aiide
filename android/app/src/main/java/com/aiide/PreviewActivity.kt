@@ -1,14 +1,13 @@
 package com.aiide
 
-import android.content.Context
 import android.os.Bundle
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.Button
 import android.widget.EditText
-import androidx.appcompat.app.AppCompatActivity
+import android.app.Activity
 
-class PreviewActivity : AppCompatActivity() {
+class PreviewActivity : Activity() {
     private lateinit var webView: WebView
     private lateinit var urlInput: EditText
     private lateinit var loadButton: Button
